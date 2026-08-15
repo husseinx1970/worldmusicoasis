@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Worldmusic Oasis — Nyredesignad startsida</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;0,9..144,700;1,9..144,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#1B2A4D;
+    --indigo-deep:#121D38;
+    --gold:#D9A62E;
+    --gold-soft:#EBCB7C;
+    --rust:#C1512F;
+    --cream:#F6EFE2;
+    --cream-dim:#EDE3CE;
+    --ink:#211A14;
+    --line:rgba(33,26,20,0.14);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--rust);
+    font-weight:600;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    margin:0;
+    font-weight:600;
+  }
+
+  /* ---------- background texture ---------- */
+  .adire-bg{
+    background-color:var(--indigo);
+    background-image:
+      repeating-linear-gradient(45deg, rgba(217,166,46,0.05) 0px, rgba(217,166,46,0.05) 2px, transparent 2px, transparent 22px),
+      repeating-linear-gradient(-45deg, rgba(217,166,46,0.05) 0px, rgba(217,166,46,0.05) 2px, transparent 2px, transparent 22px);
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,239,226,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-wrap{
+    max-width:1180px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-weight:700; font-size:1.05rem;
+    letter-spacing:0.01em;
+  }
+  .logo .mark{
+    width:30px; height:30px; border-radius:50%;
+    background:conic-gradient(var(--indigo) 0 25%, var(--gold) 0 50%, var(--rust) 0 75%, var(--indigo) 0 100%);
+    position:relative;
+  }
+  .logo .mark::after{
+    content:''; position:absolute; inset:38%; background:var(--cream); border-radius:50%;
+  }
+  nav.links{ display:flex; gap:26px; font-size:0.86rem; font-weight:500;}
+  nav.links a{ text-decoration:none; opacity:0.75; transition:opacity .2s;}
+  nav.links a:hover{ opacity:1; color:var(--rust);}
+  @media (max-width:760px){ nav.links{ display:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{
+    max-width:1180px; margin:0 auto;
+    padding:56px 28px 40px;
+    display:grid; grid-template-columns:1fr 1fr; gap:56px;
+    align-items:center;
+  }
+  @media (max-width:900px){ .hero{ grid-template-columns:1fr; gap:36px; padding-top:32px;} }
+
+  .platter-stage{
+    position:relative; display:flex; align-items:center; justify-content:center;
+    aspect-ratio:1/1;
+  }
+  .vinyl{
+    width:88%; aspect-ratio:1/1; border-radius:50%;
+    background:
+      repeating-radial-gradient(circle at center, #0c0c0c 0px, #0c0c0c 1px, #1a1a1a 2px, #1a1a1a 3px);
+    box-shadow:0 30px 60px -20px rgba(18,29,56,0.55), inset 0 0 0 2px rgba(255,255,255,0.04);
+    position:relative;
+    animation:spin 9s linear infinite;
+    animation-play-state:paused;
+  }
+  .platter-stage:hover .vinyl, .platter-stage.playing .vinyl{ animation-play-state:running; }
+  @keyframes spin{ to{ transform:rotate(360deg);} }
+  .label{
+    position:absolute; inset:0; margin:auto; width:40%; height:40%; border-radius:50%;
+    background-image:url('https://static.wixstatic.com/media/7166f7_14593338bad542749aed587544c12a95~mv2.jpg/v1/fit/w_500,h_500,q_90/file.jpg');
+    background-size:cover; background-position:center;
+    box-shadow:0 0 0 3px var(--gold), 0 0 0 5px rgba(0,0,0,0.4);
+  }
+  .label::after{
+    content:''; position:absolute; inset:0; margin:auto; width:14%; height:14%;
+    background:var(--cream); border-radius:50%; box-shadow:0 0 0 2px rgba(0,0,0,0.5);
+  }
+  .tonearm{
+    position:absolute; top:-4%; right:2%; width:34%; height:34%;
+    transform-origin:88% 12%;
+    transform:rotate(-24deg);
+    transition:transform .6s cubic-bezier(.4,0,.2,1);
+    filter:drop-shadow(0 8px 10px rgba(0,0,0,0.35));
+  }
+  .platter-stage:hover .tonearm, .platter-stage.playing .tonearm{ transform:rotate(4deg); }
+  .play-hint{
+    margin-top:14px; text-align:center; font-family:'JetBrains Mono',monospace;
+    font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; opacity:0.55;
+  }
+
+  .hero-copy .eyebrow{ margin-bottom:14px; display:block; }
+  .hero-copy h1{
+    font-size:clamp(2.6rem, 5vw, 4rem);
+    line-height:0.98;
+    letter-spacing:-0.01em;
+  }
+  .hero-copy .subtitle{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:450;
+    font-size:1.6rem; color:var(--rust); margin-top:6px;
+  }
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:10px; margin:22px 0 26px;
+  }
+  .pill{
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.04em;
+    padding:6px 12px; border-radius:999px; border:1px solid var(--line);
+    background:rgba(255,255,255,0.5);
+  }
+  .pill.condition{ background:var(--indigo); color:var(--cream); border-color:var(--indigo); }
+
+  .buy-row{
+    display:flex; align-items:center; gap:22px; margin-top:8px; flex-wrap:wrap;
+  }
+  .price-tag{
+    font-family:'Fraunces', serif; font-weight:700; font-size:2.1rem; color:var(--indigo);
+    position:relative;
+  }
+  .price-tag sup{ font-size:0.9rem; top:-0.9em; }
+  .btn{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:0.95rem;
+    padding:15px 30px; border-radius:999px; border:none; cursor:pointer;
+    background:var(--rust); color:var(--cream);
+    transition:transform .18s ease, box-shadow .18s ease;
+    box-shadow:0 10px 20px -8px rgba(193,81,47,0.55);
+  }
+  .btn:hover{ transform:translateY(-2px); box-shadow:0 14px 26px -8px rgba(193,81,47,0.6); }
+  .btn.ghost{
+    background:transparent; color:var(--indigo); border:1.5px solid var(--indigo);
+    box-shadow:none;
+  }
+  .btn.ghost:hover{ background:var(--indigo); color:var(--cream); }
+
+  /* ---------- details strip ---------- */
+  .strip{
+    max-width:1180px; margin:10px auto 0; padding:0 28px 60px;
+  }
+  .cards{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
+  }
+  @media (max-width:760px){ .cards{ grid-template-columns:repeat(2,1fr); } }
+  .card{
+    background:var(--cream-dim);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px;
+  }
+  .card .eyebrow{ margin-bottom:8px; }
+  .card .val{ font-family:'Fraunces', serif; font-size:1.15rem; }
+
+  /* ---------- story section ---------- */
+  .story{
+    color:var(--cream);
+    padding:80px 28px;
+  }
+  .story-inner{
+    max-width:900px; margin:0 auto;
+  }
+  .story .eyebrow{ color:var(--gold-soft); }
+  .story h2{
+    font-size:clamp(1.8rem,3.4vw,2.6rem);
+    margin:14px 0 28px;
+    color:var(--cream);
+  }
+  .story p{
+    font-size:1.05rem; line-height:1.75; color:rgba(246,239,226,0.86);
+    margin:0 0 20px; max-width:66ch;
+  }
+  .pull{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:1.5rem; color:var(--gold-soft); line-height:1.4;
+    border-left:3px solid var(--rust); padding-left:22px; margin:34px 0;
+    max-width:56ch;
+  }
+
+  .timeline{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:22px; margin-top:48px;
+  }
+  @media (max-width:820px){ .timeline{ grid-template-columns:repeat(2,1fr);} }
+  .tl-item{ border-top:1px solid rgba(246,239,226,0.25); padding-top:14px; }
+  .tl-year{ font-family:'JetBrains Mono',monospace; color:var(--gold); font-size:0.85rem; }
+  .tl-text{ font-size:0.9rem; color:rgba(246,239,226,0.78); margin-top:6px; line-height:1.5;}
+
+  /* ---------- more / related ---------- */
+  .more{
+    max-width:1180px; margin:0 auto; padding:70px 28px;
+  }
+  .more h3{ font-size:1.5rem; margin-bottom:6px; }
+  .more p.lead{ opacity:0.65; margin:0 0 30px; font-size:0.95rem; }
+  .browse-row{
+    display:flex; gap:14px; flex-wrap:wrap;
+  }
+  .browse-chip{
+    padding:12px 20px; border-radius:12px; border:1px solid var(--line);
+    background:var(--cream-dim); text-decoration:none; font-size:0.9rem; font-weight:500;
+    display:flex; align-items:center; gap:8px;
+    transition:background .2s, border-color .2s;
+  }
+  .browse-chip:hover{ background:var(--indigo); color:var(--cream); border-color:var(--indigo); }
+  .dot{ width:7px; height:7px; border-radius:50%; background:var(--rust); }
+
+  /* ---------- footer ---------- */
+  footer{
+    background:var(--indigo-deep); color:rgba(246,239,226,0.75);
+    padding:56px 28px 30px;
+  }
+  .footer-inner{
+    max-width:1180px; margin:0 auto;
+    display:grid; grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:36px;
+  }
+  @media (max-width:820px){ .footer-inner{ grid-template-columns:1fr 1fr; } }
+  footer h4{
+    font-family:'JetBrains Mono',monospace; font-size:0.75rem; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--gold-soft); margin:0 0 14px;
+  }
+  footer a{ display:block; text-decoration:none; font-size:0.88rem; margin-bottom:9px; opacity:0.85; }
+  footer a:hover{ opacity:1; color:var(--gold-soft); }
+  .footer-brand{ font-family:'Fraunces',serif; font-size:1.2rem; color:var(--cream); margin-bottom:10px; }
+  .footer-brand p{ font-size:0.88rem; line-height:1.6; max-width:34ch; opacity:0.7; }
+  .newsletter{ display:flex; gap:8px; margin-top:14px; }
+  .newsletter input{
+    flex:1; padding:11px 14px; border-radius:8px; border:1px solid rgba(246,239,226,0.25);
+    background:rgba(246,239,226,0.06); color:var(--cream); font-family:'Space Grotesk';
+  }
+  .newsletter button{
+    padding:11px 18px; border-radius:8px; border:none; background:var(--rust); color:var(--cream);
+    font-weight:600; cursor:pointer;
+  }
+  /* ---------- news / recommends ---------- */
+  .news{
+    max-width:1180px; margin:0 auto; padding:20px 28px 10px;
+  }
+  .news h3{ font-size:1.5rem; margin-bottom:6px; }
+  .news p.lead{ opacity:0.65; margin:0 0 26px; font-size:0.95rem; }
+  .news-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
+  }
+  @media (max-width:820px){ .news-grid{ grid-template-columns:1fr; } }
+  .news-card{
+    border-radius:16px; overflow:hidden; background:var(--cream-dim);
+    border:1px solid var(--line); text-decoration:none; color:var(--ink);
+    display:block; transition:transform .2s ease;
+  }
+  .news-card:hover{ transform:translateY(-4px); }
+  .news-card img{ width:100%; aspect-ratio:16/11; object-fit:cover; display:block; }
+  .news-card .body{ padding:16px 18px 20px; }
+  .news-card .eyebrow{ margin-bottom:6px; display:block; }
+  .news-card .ttl{ font-family:'Fraunces',serif; font-size:1.05rem; line-height:1.3; }
+
+  /* ---------- explore tiles ---------- */
+  .explore{
+    max-width:1180px; margin:0 auto; padding:60px 28px 10px;
+  }
+  .explore h3{ font-size:1.5rem; margin-bottom:6px; }
+  .explore p.lead{ opacity:0.65; margin:0 0 26px; font-size:0.95rem; }
+  .tile-grid{
+    display:grid; grid-template-columns:repeat(6,1fr); gap:14px;
+  }
+  @media (max-width:900px){ .tile-grid{ grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:520px){ .tile-grid{ grid-template-columns:repeat(2,1fr);} }
+  .tile{
+    position:relative; border-radius:50%; aspect-ratio:1/1; overflow:hidden;
+    text-decoration:none; display:block; box-shadow:0 10px 22px -12px rgba(33,26,20,0.35);
+    border:3px solid var(--cream);
+    outline:1px solid var(--line);
+  }
+  .tile img{ width:100%; height:100%; object-fit:cover; display:block; filter:saturate(0.92); transition:transform .35s ease, filter .35s ease; }
+  .tile:hover img{ transform:scale(1.08); filter:saturate(1.1); }
+  .tile .cap{
+    position:absolute; left:0; right:0; bottom:0; padding:0 0 12px; text-align:center;
+    font-family:'JetBrains Mono',monospace; font-size:0.66rem; letter-spacing:0.05em; text-transform:uppercase;
+    color:#fff; text-shadow:0 2px 6px rgba(0,0,0,0.65);
+  }
+
+  /* ---------- partners ---------- */
+  .partners{
+    background:var(--cream-dim); border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    margin-top:60px; padding:44px 28px;
+  }
+  .partners-inner{ max-width:1180px; margin:0 auto; }
+  .partners .eyebrow{ display:block; margin-bottom:18px; text-align:center; }
+  .logo-row{
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:34px;
+  }
+  .logo-row img{
+    height:34px; width:auto; object-fit:contain;
+    filter:grayscale(1) opacity(0.55);
+    transition:filter .2s ease;
+  }
+  .logo-row img:hover{ filter:grayscale(0) opacity(1); }
+
+  /* ---------- product grid ---------- */
+  .shop{
+    max-width:1180px; margin:0 auto; padding:8px 28px 10px;
+  }
+  .shop-head{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:20px;
+    margin-bottom:26px; flex-wrap:wrap;
+  }
+  .shop-head h2{ font-size:clamp(1.7rem,3vw,2.3rem); }
+  .shop-head .see-all{
+    font-family:'JetBrains Mono',monospace; font-size:0.78rem; letter-spacing:0.05em;
+    text-transform:uppercase; text-decoration:none; color:var(--rust); border-bottom:1px solid var(--rust);
+    padding-bottom:2px; white-space:nowrap;
+  }
+  .product-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:22px;
+  }
+  @media (max-width:960px){ .product-grid{ grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:680px){ .product-grid{ grid-template-columns:repeat(2,1fr);} }
+  .p-card{
+    text-decoration:none; color:var(--ink); display:block;
+    background:var(--cream-dim);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:22px 18px 18px;
+    text-align:center;
+    position:relative;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .p-card:hover{ transform:translateY(-5px); box-shadow:0 18px 30px -18px rgba(33,26,20,0.35); }
+  .p-card .disc{
+    width:120px; height:120px; margin:0 auto 16px; border-radius:50%;
+    position:relative; background:#111;
+    box-shadow:0 10px 18px -8px rgba(0,0,0,0.45);
+  }
+  .p-card .disc img{
+    position:absolute; inset:0; margin:auto; width:62%; height:62%; border-radius:50%;
+    object-fit:cover; box-shadow:0 0 0 2px var(--gold);
+  }
+  .p-card .disc::after{
+    content:''; position:absolute; inset:0; margin:auto; width:10%; height:10%;
+    background:var(--cream-dim); border-radius:50%;
+  }
+  .p-card .badge{
+    position:absolute; top:14px; left:14px;
+    font-family:'JetBrains Mono',monospace; font-size:0.62rem; letter-spacing:0.04em; text-transform:uppercase;
+    background:var(--indigo); color:var(--cream); padding:3px 9px; border-radius:999px;
+  }
+  .p-card .name{ font-family:'Fraunces',serif; font-size:1rem; line-height:1.3; min-height:2.5em; }
+  .p-card .price{
+    font-family:'JetBrains Mono',monospace; font-size:0.85rem; color:var(--rust); margin-top:8px; font-weight:600;
+  }
+  .buy-btn{
+    display:block; margin-top:14px; text-decoration:none;
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:0.85rem;
+    padding:10px 0; border-radius:999px; background:var(--rust); color:var(--cream);
+    transition:transform .15s ease, background .15s ease;
+  }
+  .buy-btn:hover{ transform:translateY(-1px); background:#a8461f; }
+  .buy-btn.soon{
+    background:transparent; color:var(--ink); opacity:0.45; border:1.5px dashed var(--line); cursor:not-allowed;
+  }
+  .buy-btn.soon:hover{ transform:none; background:transparent; }
+  .pay-badges{
+    display:flex; align-items:center; justify-content:center; gap:6px; margin-top:8px;
+    font-family:'JetBrains Mono',monospace; font-size:0.6rem; letter-spacing:0.03em; opacity:0.5;
+  }
+
+  /* ---------- about ---------- */
+  .about{
+    max-width:1180px; margin:0 auto; padding:70px 28px;
+    display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;
+  }
+  @media (max-width:860px){ .about{ grid-template-columns:1fr; } }
+  .about img{ width:100%; border-radius:18px; display:block; box-shadow:0 20px 40px -20px rgba(33,26,20,0.4); }
+  .about-copy p{ font-size:1rem; line-height:1.75; opacity:0.85; margin:14px 0; }
+  .about-copy h2{ font-size:clamp(1.7rem,3vw,2.3rem); margin-bottom:4px; }
+
+  /* ---------- contact ---------- */
+  .contact{
+    max-width:1180px; margin:0 auto; padding:70px 28px;
+    display:grid; grid-template-columns:1fr 1fr; gap:40px;
+  }
+  @media (max-width:820px){ .contact{ grid-template-columns:1fr; } }
+  .contact h2{ font-size:clamp(1.7rem,3vw,2.3rem); margin-bottom:16px; }
+  .contact-card{
+    background:var(--indigo); color:var(--cream); border-radius:20px; padding:34px;
+  }
+  .contact-card .row{ display:flex; gap:14px; margin-bottom:18px; align-items:flex-start; }
+  .contact-card .row .lbl{
+    font-family:'JetBrains Mono',monospace; font-size:0.7rem; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--gold-soft); min-width:88px;
+  }
+  .contact-card .row .val{ font-size:0.98rem; line-height:1.5; opacity:0.92; }
+  .contact-card a{ color:var(--cream); text-decoration:underline; }
+  .contact-form{ background:var(--cream-dim); border:1px solid var(--line); border-radius:20px; padding:34px; }
+  .contact-form input, .contact-form textarea{
+    width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--line);
+    background:#fff; font-family:'Space Grotesk'; margin-bottom:14px; font-size:0.92rem;
+  }
+  .contact-form textarea{ min-height:100px; resize:vertical; }
+  .contact-form button{
+    font-family:'Space Grotesk'; font-weight:600; font-size:0.92rem; padding:13px 26px;
+    border-radius:999px; border:none; background:var(--rust); color:var(--cream); cursor:pointer;
+  }
+
+  .bottom-line{
+    max-width:1180px; margin:44px auto 0; padding-top:22px;
+    border-top:1px solid rgba(246,239,226,0.12);
+    display:flex; justify-content:space-between; font-size:0.78rem; opacity:0.55; flex-wrap:wrap; gap:10px;
+  }
+</style>
+</head>
+<body>
+
+<!--
+  ============================================================
+  STRIPE-KONFIGURATION — LÄGG IN DINA LÄNKAR HÄR
+  ============================================================
+  1. Gå till https://dashboard.stripe.com/payment-links
+  2. Skapa en Payment Link per skiva (pris, bild, lagerantal om du vill).
+  3. Under "Payment methods" på länken — slå på både "Card" och "Klarna"
+     (Klarna kräver att din Stripe-butik har SEK/EUR som valuta och att
+     kontot är verifierat för Klarna i din region — Stripe visar det
+     alternativet automatiskt om det är tillgängligt för dig).
+  4. Kopiera varje länk (ser ut som https://buy.stripe.com/xxxxxxxx)
+     och klistra in den mellan citattecknen nedan, för rätt produkt.
+  5. Spara filen — knapparna aktiveras automatiskt. Produkter utan
+     länk visar "Kommer snart" tills du fyllt i dem.
+  ============================================================
+-->
+<script>
+  const STRIPE_LINKS = {
+    "adewale-ayuba":              "",  // ADEWALE AYUBA — Bubble, 159 kr
+    "tinariwen-hoggar":           "",  // TINARIWEN — Hoggar, 459 kr
+    "noura-mint-seymali":         "",  // Noura Mint Seymali, 159 kr
+    "imarhan":                    "",  // IMARHAN, 289 kr
+    "amaar-808-club-tounsi":      "",  // AMAAR 808 — Club Tounsi, 469 kr
+    "baba-zula-istanbul-sokaklari": "", // Baba Zula — Istanbul Sokaklari, 349 kr
+    "mdou-moctar":                "",  // Mdou Moctar, 149 kr
+    "cornelis-vreeswijk":         "",  // Cornelis Vreeswijk, 75 kr
+    "lovemore-majaivana":         ""   // Lovemore Majaivana, 189 kr
+  };
+</script>
+
+<header>
+  <div class="nav-wrap">
+    <div class="logo"><img src="https://static.wixstatic.com/media/7166f7_0f824cdf5394435f9f5b06178131a06c~mv2.gif" alt="World Music Oasis" style="height:34px; width:auto; border-radius:6px;"> World Music&nbsp;Oasis</div>
+    <nav class="links">
+      <a href="#hem">Hem</a>
+      <a href="#butik">Butik</a>
+      <a href="#om-oss">Om oss</a>
+      <a href="#artister">Artister</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="hem">
+  <div>
+    <div class="platter-stage" id="platter">
+      <div class="vinyl">
+        <div class="label"></div>
+      </div>
+      <svg class="tonearm" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="86" cy="12" r="7" fill="#D9A62E"/>
+        <rect x="83" y="10" width="6" height="70" rx="3" fill="#e7e7e7" transform="rotate(18 86 12)"/>
+        <circle cx="20" cy="82" r="3.5" fill="#e7e7e7"/>
+      </svg>
+    </div>
+    <div class="play-hint">Håll muspekaren över skivan — hör den snurra</div>
+  </div>
+
+  <div class="hero-copy">
+    <span class="eyebrow">Göteborg, Sverige · Sedan 90-talet</span>
+    <h1>WORLDMUSIC<br>OASIS</h1>
+    <div class="subtitle">Musik från hela världen</div>
+    <p style="font-size:1.02rem; line-height:1.7; opacity:0.85; max-width:46ch; margin-top:18px;">
+      CD, vinyl, kassett och DVD med Fuji, Rai, Afrobeat, Funk, Jazz, Reggae och mängder av andra
+      genrer — insamlat, kurerat och sålt med kärlek av grundarna Said &amp; Eva.
+    </p>
+
+    <div class="meta-row">
+      <span class="pill">Vinyl</span>
+      <span class="pill">CD</span>
+      <span class="pill">Kassett</span>
+      <span class="pill condition">Internationell frakt</span>
+    </div>
+
+    <div class="buy-row">
+      <a class="btn" href="#butik" style="text-decoration:none; display:inline-block;">Handla kollektionen</a>
+      <a class="btn ghost" href="#om-oss" style="text-decoration:none; display:inline-block;">Läs vår historia</a>
+    </div>
+  </div>
+</section>
+
+<section class="shop" id="butik">
+  <div class="shop-head">
+    <h2>Nyinkommet</h2>
+    <span class="see-all" style="border:none; opacity:0.6;">9 produkter</span>
+  </div>
+  <div class="product-grid">
+
+    <div class="p-card">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_14593338bad542749aed587544c12a95~mv2.jpg" alt="Adewale Ayuba - Bubble"></div>
+      <span class="badge">Fuji · Nigeria</span>
+      <div class="name">ADEWALE AYUBA — Bubble</div>
+      <div class="price">159,00 kr</div>
+      <a class="buy-btn" data-stripe="adewale-ayuba" href="#">Köp nu</a>
+      <div class="pay-badges">KORT · KLARNA</div>
+    </div>
+
+    <div class="p-card">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_f01b69d1b4a3486a8fb952c3af6a6973~mv2.jpg" alt="Tinariwen - Hoggar"></div>
+      <span class="badge">Ny — inplastad</span>
+      <div class="name">TINARIWEN — Hoggar</div>
+      <div class="price">459,00 kr</div>
+      <a class="buy-btn" data-stripe="tinariwen-hoggar" href="#">Köp nu</a>
+      <div class="pay-badges">KORT · KLARNA</div>
+    </div>
+
+    <div class="p-card">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_c71e7d99a2d54791a388ea5726c3e480~mv2.jpg" alt="Noura Mint Seymali"></div>
+      <span class="badge">Nytt album</span>
+      <div class="name">Noura Mint Seymali</div>
+      <div class="price">159,00 kr</div>
+      <a class="buy-btn" data-stripe="noura-mint-seymali" href="#">Köp nu</a>
+      <div class="pay-badges">KORT · KLARNA</div>
+    </div>
+
+    <div class="p-card">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_0d36a2579d9541468afca482047975d0~mv2.jpg" alt="Imarhan"></div>
+      <span class="badge">Tuareg rock</span>
+      <div class="name">IMARHAN</div>
+      <div class="price">289,00 kr</div>
+      <a class="buy-btn" data-stripe="imarhan" href="#">Köp nu</a>
+      <div class="pay-badges">KORT · KLARNA</div>
+    </div>
+
+    <div class="p-card">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_27abe4f7fc0246efb4049f2a392a68e1~mv2.jpg" alt="Amaar 808 - Club Tounsi"></div>
+      <span class="badge">Ny</span>
+      <div class="name">AMAAR 808 — Club Tounsi</div>
+      <div class="price">469,00 kr</div>
+      <a class="buy-btn" data-stripe="amaar-808-club-tounsi" href="#">Köp nu</a>
+      <div class="pay-badges">KORT · KLARNA</div>
+    </div>
+
+    <div class="p-card">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_82a4544b7a76410abcda243e206851c5~mv2.jpg" alt="Baba Zula - Istanbul Sokaklari"></div>
+      <span class="badge">Ny</span>
+      <div class="name">Baba Zula — Istanbul Sokaklari</div>
+      <div class="price">349,00 kr</div>
+      <a class="buy-btn" data-stripe="baba-zula-istanbul-sokaklari" href="#">Köp nu</a>
+      <div class="pay-badges">KORT · KLARNA</div>
+    </div>
+
+    <div class="p-card">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_cd9aeb95637c44859f8f8d549fb2d1d7~mv2.jpg" alt="Mdou Moctar"></div>
+      <span class="badge">Ny</span>
+      <div class="name">Mdou Moctar</div>
+      <div class="price">149,00 kr</div>
+      <a class="buy-btn" data-stripe="mdou-moctar" href="#">Köp nu</a>
+      <div class="pay-badges">KORT · KLARNA</div>
+    </div>
+
+    <div class="p-card">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_bb2f118a17ff46e4b96f3ca1355c5f9f~mv2.jpg" alt="Cornelis Vreeswijk"></div>
+      <span class="badge">VG/VG · 1970</span>
+      <div class="name">Cornelis Vreeswijk — Poem, Ballader Och Lite Blues</div>
+      <div class="price">75,00 kr</div>
+      <a class="buy-btn" data-stripe="cornelis-vreeswijk" href="#">Köp nu</a>
+      <div class="pay-badges">KORT · KLARNA</div>
+    </div>
+
+    <div class="p-card">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_59e94472bef047029143134fed4be2b2~mv2.jpg" alt="Lovemore Majaivana - Salanini Zinini"></div>
+      <span class="badge">VG/VG · 1984</span>
+      <div class="name">Lovemore Majaivana — Salanini Zinini</div>
+      <div class="price">189,00 kr</div>
+      <a class="buy-btn" data-stripe="lovemore-majaivana" href="#">Köp nu</a>
+      <div class="pay-badges">KORT · KLARNA</div>
+    </div>
+
+  </div>
+</section>
+
+<section class="story adire-bg">
+  <div class="story-inner">
+    <span class="eyebrow">Utvald skiva — Nyinkommet</span>
+    <h2>Trumman som fick Fuji att sjunga för hela världen</h2>
+    <p>
+      Adewale Ayuba, född i Ikenne Remo i Ogun State och känd under artistnamnet Mr. Johnson,
+      växte upp med musiken redan som åttaåring och stod på lokala scener innan tonåren var över.
+      Han byggde sedan sitt eget band, Bonsue Fuji Organization — femton man starkt, uppbyggt kring
+      trummor och den kallrop-och-svarssång som präglar traditionell Fuji-musik.
+    </p>
+    <p>
+      Skivan i din hand, <em>Bubble</em>, är den som förändrade allt. Släppt i början av 90-talet
+      blandade den de traditionella yoruba-rytmerna med jazz, funk och en mer urban, engelskspråkig
+      ton — ett grepp som fick albumet att toppa listorna i ett halvår och göra Fuji tillgängligt
+      för en helt ny publik, långt utanför Nigerias gränser.
+    </p>
+    <div class="pull">
+      "Bubble" blev den skiva som tog Fuji-musiken från gathörnen i Lagos till scener i New York
+      och New Orleans.
+    </div>
+    <p>
+      Ayuba turnerade USA och uppträdde på New Orleans Jazz Festival, och tilldelades nyckeln till
+      staden Providence — ett kvitto på hur långt den där trumman till slut hördes.
+    </p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year">Ålder 8</div>
+        <div class="tl-text">Första framträdandena på lokala musiktävlingar i Ogun State.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">Ålder 17</div>
+        <div class="tl-text">Debutalbumet Ibere (”Början”) släpps.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1991</div>
+        <div class="tl-text">Bubble släpps och toppar listorna i sex månader.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1993</div>
+        <div class="tl-text">USA-turné och spelning på New Orleans Jazz Festival.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="more">
+  <h3>Fler skatter från samlingen</h3>
+  <p class="lead">Utforska resten av utbudet hos World Music Oasis.</p>
+  <div class="browse-row">
+    <a class="browse-chip" href="https://www.worldmusicoasis.com/shop-all"><span class="dot"></span> Hela butiken</a>
+    <a class="browse-chip" href="https://www.worldmusicoasis.com/vinyl"><span class="dot"></span> Vinyl</a>
+    <a class="browse-chip" href="https://www.worldmusicoasis.com/cd"><span class="dot"></span> CD</a>
+    <a class="browse-chip" href="https://www.worldmusicoasis.com/artists"><span class="dot"></span> Alla artister</a>
+    <a class="browse-chip" href="https://www.worldmusicoasis.com/culture"><span class="dot"></span> Kultur</a>
+  </div>
+</section>
+
+<section class="about" id="om-oss">
+  <img src="https://static.wixstatic.com/media/7166f7_7521837ab2a44d3faf1ae3227e840b29~mv2.jpeg" alt="Said, grundare av Worldmusic Oasis">
+  <div class="about-copy">
+    <span class="eyebrow">Om oss</span>
+    <h2>Skandinaviens största världsmusikbutik</h2>
+    <p>
+      Worldmusic Oasis grundades i Göteborg av Said och Eva redan på 90-talet och har sedan dess
+      vuxit till att bli en av de största butikerna i sitt slag i Skandinavien. Sortimentet sträcker
+      sig långt bortom världsmusik och rymmer idag även ett brett urval av pop, rock, soul, funk och jazz på vinyl.
+    </p>
+    <p>
+      Butiken ligger på Engelbrektsgatan 3 i Göteborg och driver, vid sidan om försäljningen, DJ Said,
+      klubbkvällen Club Barbés tillsammans med Andreas Talberg och Musikens Hus, samt regelbundna
+      föreläsningar om världsmusikens historia — bland annat om hur begreppet "world music" myntades
+      vid ett möte på puben Empress of Russia i London 1987.
+    </p>
+    <div class="buy-row" style="margin-top:6px;">
+      <a class="btn ghost" href="https://www.worldmusicoasis.com/our-story" style="text-decoration:none; display:inline-block;">Läs vår historia</a>
+    </div>
+  </div>
+</section>
+
+<section class="news">
+  <h3>Said rekommenderar</h3>
+  <p class="lead">Aktuella konserttips från vår världsmusik-kurator.</p>
+  <div class="news-grid">
+    <a class="news-card" href="https://www.worldmusicoasis.com/concerts">
+      <img src="https://static.wixstatic.com/media/7166f7_d3413cb28693475284f1e9e5e2a19148~mv2.jpg/v1/crop/x_0,y_136,w_965,h_707/fill/w_628,h_460,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/08_Kalhor-Samani1-scaled-1.jpg" alt="Kayhan Kalhor">
+      <div class="body">
+        <span class="eyebrow">Konsert</span>
+        <div class="ttl">Kayhan Kalhor — Stenhammarsalen, lörd 21 nov 2026</div>
+      </div>
+    </a>
+    <a class="news-card" href="https://www.worldmusicoasis.com/concerts">
+      <img src="https://static.wixstatic.com/media/7166f7_7b7478740230437fa258c1cbbb64d4b1~mv2.jpg/v1/crop/x_201,y_0,w_1509,h_1000/fill/w_694,h_460,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/MajidBekkas_Rect.jpg" alt="Majid Bekkas">
+      <div class="body">
+        <span class="eyebrow">Konsert</span>
+        <div class="ttl">Majid Bekkas — Stenhammarsalen, fred 23 april 2027</div>
+      </div>
+    </a>
+    <a class="news-card" href="https://www.worldmusicoasis.com/concerts">
+      <img src="https://static.wixstatic.com/media/7166f7_e1c78a21eeb24fe994f7651f20077de7~mv2.jpg/v1/fill/w_668,h_460,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Misteriata-na-balgarskite-glasove.jpg" alt="Bulgarian Voices Angelite">
+      <div class="body">
+        <span class="eyebrow">Konsert</span>
+        <div class="ttl">Bulgarian Voices Angelite — Stenhammarsalen, fred 23 april 2027</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="shop" id="artister">
+  <div class="shop-head">
+    <h2>Artister i fokus</h2>
+    <a class="see-all" href="#butik">Se hela butiken ↑</a>
+  </div>
+  <div class="product-grid">
+    <a class="p-card" href="#butik">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_14593338bad542749aed587544c12a95~mv2.jpg" alt="Adewale Ayuba"></div>
+      <span class="badge">Nigeria</span>
+      <div class="name">Adewale Ayuba</div>
+      <div class="price">Fuji / Juju</div>
+    </a>
+    <a class="p-card" href="#butik">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_f01b69d1b4a3486a8fb952c3af6a6973~mv2.jpg" alt="Tinariwen"></div>
+      <span class="badge">Mali</span>
+      <div class="name">Tinariwen</div>
+      <div class="price">Tuareg / Desert blues</div>
+    </a>
+    <a class="p-card" href="#butik">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_c71e7d99a2d54791a388ea5726c3e480~mv2.jpg" alt="Noura Mint Seymali"></div>
+      <span class="badge">Mauretanien</span>
+      <div class="name">Noura Mint Seymali</div>
+      <div class="price">Griot / Moorish</div>
+    </a>
+    <a class="p-card" href="#butik">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_0d36a2579d9541468afca482047975d0~mv2.jpg" alt="Imarhan"></div>
+      <span class="badge">Algeriet</span>
+      <div class="name">Imarhan</div>
+      <div class="price">Tuareg rock</div>
+    </a>
+    <a class="p-card" href="#butik">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_82a4544b7a76410abcda243e206851c5~mv2.jpg" alt="Baba Zula"></div>
+      <span class="badge">Turkiet</span>
+      <div class="name">Baba Zula</div>
+      <div class="price">Psychedelic / Saz</div>
+    </a>
+    <a class="p-card" href="#butik">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_cd9aeb95637c44859f8f8d549fb2d1d7~mv2.jpg" alt="Mdou Moctar"></div>
+      <span class="badge">Niger</span>
+      <div class="name">Mdou Moctar</div>
+      <div class="price">Tuareg gitarr</div>
+    </a>
+    <a class="p-card" href="#butik">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_59e94472bef047029143134fed4be2b2~mv2.jpg" alt="Lovemore Majaivana"></div>
+      <span class="badge">Zimbabwe</span>
+      <div class="name">Lovemore Majaivana</div>
+      <div class="price">Ndebele pop</div>
+    </a>
+    <a class="p-card" href="#butik">
+      <div class="disc"><img src="https://static.wixstatic.com/media/7166f7_bb2f118a17ff46e4b96f3ca1355c5f9f~mv2.jpg" alt="Cornelis Vreeswijk"></div>
+      <span class="badge">Sverige</span>
+      <div class="name">Cornelis Vreeswijk</div>
+      <div class="price">Visa / Blues</div>
+    </a>
+  </div>
+</section>
+
+<section class="explore">
+  <h3>Utforska Oasis</h3>
+  <p class="lead">Samma ansikten och platser du hittar på startsidan.</p>
+  <div class="tile-grid">
+    <a class="tile" href="https://www.worldmusicoasis.com/dj-said">
+      <img src="https://static.wixstatic.com/media/7166f7_7521837ab2a44d3faf1ae3227e840b29~mv2.jpeg/v1/crop/x_226,y_0,w_631,h_634/fill/w_260,h_261,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/said2.jpeg" alt="DJ Said">
+      <span class="cap">DJ Said</span>
+    </a>
+    <a class="tile" href="https://www.worldmusicoasis.com/about-world-music-lectures">
+      <img src="https://static.wixstatic.com/media/7166f7_aab682427e1e443aa6e0ceadcc2f5370~mv2.jpeg/v1/crop/x_211,y_429,w_377,h_378/fill/w_260,h_261,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/mitrassatf.jpeg" alt="Föreläsningar">
+      <span class="cap">Lectures</span>
+    </a>
+    <a class="tile" href="https://www.worldmusicoasis.com/reportage">
+      <img src="https://static.wixstatic.com/media/7166f7_caa378e0107c48e58eef85d2fb7a9bc2~mv2.jpeg/v1/crop/x_7,y_919,w_592,h_608/fill/w_254,h_261,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/said-5.jpeg" alt="Reportage">
+      <span class="cap">Reportage</span>
+    </a>
+    <a class="tile" href="https://www.worldmusicoasis.com/club-barbes">
+      <img src="https://static.wixstatic.com/media/7166f7_c73ff32344a54e0d898f25d38939cbee~mv2.jpeg/v1/crop/x_200,y_0,w_327,h_328/fill/w_260,h_261,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/tisdass.jpeg" alt="Club Barbés">
+      <span class="cap">Club Barbés</span>
+    </a>
+    <a class="tile" href="https://www.worldmusicoasis.com/artists">
+      <img src="https://static.wixstatic.com/media/7166f7_b9ed5227f5da4b95acb08b5313476a7a~mv2.jpeg/v1/crop/x_251,y_0,w_337,h_339/fill/w_260,h_261,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/goran.jpeg" alt="Artister">
+      <span class="cap">Artists</span>
+    </a>
+    <a class="tile" href="https://www.worldmusicoasis.com">
+      <img src="https://static.wixstatic.com/media/7166f7_e942408dedb54524a821d527164a5282~mv2.jpg/v1/crop/x_45,y_0,w_383,h_394/fill/w_254,h_261,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/ali_edited.jpg" alt="Intervjuer">
+      <span class="cap">Interviews</span>
+    </a>
+  </div>
+</section>
+
+<section class="partners">
+  <div class="partners-inner">
+    <span class="eyebrow">Samarbetspartners</span>
+    <div class="logo-row">
+      <a href="https://www.songlines.co.uk/"><img src="https://static.wixstatic.com/media/7166f7_846229ec7d954804942af5f8c13153a7~mv2.png/v1/fill/w_174,h_55,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Songlines.png" alt="Songlines"></a>
+      <a href="https://www.lira.se/"><img src="https://static.wixstatic.com/media/7166f7_19bf4fa95d6b4df8967ec5f0bfca1dad~mv2.png/v1/fill/w_166,h_46,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/lira-logo-2019.png" alt="Lira"></a>
+      <a href="https://globaltica.pl/"><img src="https://static.wixstatic.com/media/7166f7_7c1747510991429bb4a9e89aabb86590~mv2.png/v1/fill/w_197,h_37,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/globaltica-logo-01.png" alt="Globaltica"></a>
+      <a href="https://rwmf.net/"><img src="https://static.wixstatic.com/media/7166f7_41294d9a8b4c438ab6e2bd0062120cf5~mv2.png/v1/fill/w_129,h_133,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/RWMF-LOGO-cropped.png" alt="RWMF"></a>
+      <a href="https://www.bush-fire.com/"><img src="https://static.wixstatic.com/media/7166f7_f3049c4bb7594cfbae0c6d9446e855a3~mv2.png/v1/crop/x_86,y_0,w_862,h_702/fill/w_130,h_102,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/bushfire.png" alt="Bushfire"></a>
+      <a href="https://alicecph.com/"><img src="https://static.wixstatic.com/media/7166f7_eadf4b941ebb4668beb16190f0f26e3b~mv2.png/v1/fill/w_188,h_107,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/images.png" alt="Alice"></a>
+      <a href="https://cosmopolite.no/"><img src="https://static.wixstatic.com/media/7166f7_535382f455e5461d8c22b4dec8519771~mv2.png/v1/fill/w_174,h_45,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/logo.png" alt="Cosmopolite"></a>
+      <a href="https://www.en.masa.ci/"><img src="https://static.wixstatic.com/media/7166f7_39625f5b4baf4d129ca061377dc2a211~mv2.png/v1/crop/x_62,y_0,w_692,h_150/fill/w_212,h_46,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/logo-site-MASA-01-01.png" alt="MASA"></a>
+      <a href="https://www.osloworld.no/"><img src="https://static.wixstatic.com/media/7166f7_3dadec3fd1254ef3a361cc6c0a9aec73~mv2.png/v1/fill/w_112,h_46,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/oslo%20logo-01.png" alt="Oslo World"></a>
+      <a href="http://www.visaformusic.com/"><img src="https://static.wixstatic.com/media/7166f7_202dc550b97f4b1888413e012d39efb4~mv2.png/v1/fill/w_234,h_71,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Visa%20for%20music%20logo.png" alt="Visa for Music"></a>
+      <a href="https://www.fmmsines.pt/"><img src="https://static.wixstatic.com/media/7166f7_93dc5c8981c24600881a9e6da6a2eb9c~mv2.jpeg/v1/fill/w_203,h_102,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/fmm_logotipo.jpeg" alt="FMM Sines"></a>
+      <a href="https://www.busaramusic.org/"><img src="https://static.wixstatic.com/media/7166f7_505dd435e7864c72bb443fd3b5957d43~mv2.gif" alt="Busara"></a>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="kontakt">
+  <div>
+    <span class="eyebrow">Kontakt</span>
+    <h2>Hälsa på oss, eller hör av dig</h2>
+    <div class="contact-card">
+      <div class="row"><span class="lbl">Adress</span><span class="val">Engelbrektsgatan 3<br>411 25 Göteborg, Sverige</span></div>
+      <div class="row"><span class="lbl">Öppettider</span><span class="val">Måndag–Fredag<br>09:00–19:00</span></div>
+      <div class="row"><span class="lbl">Telefon</span><span class="val"><a href="tel:+46707284660">+46 70 728 46 60</a></span></div>
+      <div class="row"><span class="lbl">E-post</span><span class="val"><a href="mailto:worldmusic_oasis@hotmail.com">worldmusic_oasis@hotmail.com</a></span></div>
+      <div class="row"><span class="lbl">Socialt</span><span class="val">
+        <a href="https://www.facebook.com/Worldmusic-oasis-79179669321">Facebook</a> · <a href="https://www.instagram.com/worldmusic_oasis/">Instagram</a>
+      </span></div>
+    </div>
+  </div>
+  <div class="contact-form">
+    <span class="eyebrow">Skicka ett meddelande</span>
+    <h2 style="font-size:1.3rem; margin:10px 0 20px;">Vi svarar så snart vi kan</h2>
+    <input type="text" placeholder="Namn">
+    <input type="email" placeholder="E-post">
+    <textarea placeholder="Ditt meddelande"></textarea>
+    <button>Skicka meddelande</button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <img src="https://static.wixstatic.com/media/7166f7_0f824cdf5394435f9f5b06178131a06c~mv2.gif" alt="World Music Oasis" style="height:38px; width:auto; margin-bottom:12px; border-radius:6px;">
+      <div class="footer-brand">World Music&nbsp;Oasis</div>
+      <p>Skandinaviens största världsmusikbutik — grundad av Said &amp; Eva i Göteborg på 90-talet.</p>
+      <div style="display:flex; gap:12px; margin-top:16px;">
+        <a href="https://www.facebook.com/Worldmusic-oasis-79179669321"><img src="https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png" alt="Facebook" style="width:22px; height:22px; border-radius:5px;"></a>
+        <a href="https://www.instagram.com/worldmusic_oasis/"><img src="https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png" alt="Instagram" style="width:22px; height:22px; border-radius:5px;"></a>
+      </div>
+    </div>
+    <div>
+      <h4>Handla</h4>
+      <a href="#butik">Alla produkter</a>
+      <a href="#butik">Vinyl</a>
+      <a href="#butik">CD</a>
+      <a href="#artister">Artister</a>
+    </div>
+    <div>
+      <h4>Om oss</h4>
+      <a href="#om-oss">Vår historia</a>
+      <a href="#artister">Artister</a>
+      <a href="#kontakt">Kontakt</a>
+      <a href="#hem">Till toppen</a>
+    </div>
+    <div>
+      <h4>Håll dig uppdaterad</h4>
+      <div class="newsletter">
+        <input type="email" placeholder="Din e-post" />
+        <button>Skicka</button>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-line">
+    <span>© World Music Oasis</span>
+    <span>Ombyggd design · innehåll från worldmusicoasis.com</span>
+  </div>
+</footer>
+
+<script>
+  const platter = document.getElementById('platter');
+  platter.addEventListener('click', () => platter.classList.toggle('playing'));
+
+  const contactBtn = document.querySelector('.contact-form button');
+  if(contactBtn){
+    contactBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      contactBtn.textContent = 'Tack! Vi hör av oss.';
+      contactBtn.disabled = true;
+    });
+  }
+
+  // Wire "Köp nu"-knappar till Stripe Payment Links (se STRIPE_LINKS högst upp i filen)
+  document.querySelectorAll('.buy-btn[data-stripe]').forEach(btn => {
+    const slug = btn.getAttribute('data-stripe');
+    const url = (typeof STRIPE_LINKS !== 'undefined') ? STRIPE_LINKS[slug] : '';
+    if(url && url.trim() !== ''){
+      btn.href = url.trim();
+      btn.target = '_blank';
+      btn.rel = 'noopener';
+    } else {
+      btn.classList.add('soon');
+      btn.textContent = 'Kommer snart';
+      btn.addEventListener('click', (e) => e.preventDefault());
+    }
+  });
+</script>
+
+</body>
+</html>
